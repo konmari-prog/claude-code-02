@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Claude Code 勉強会 第2回 | LP作ってみる会</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#BFE4FF",
+        "primary-vivid": "#4DC4FF",
+        secondary: "#FFCABF",
+        "secondary-vivid": "#FF8082",
+        accent: "#FFFF80",
+        lavender: "#C9ACE6",
+        "background-light": "#FAFAF8",
+        "background-dark": "#2D2B3D",
+      },
+      fontFamily: {
+        display: ["Inter", "Noto Sans JP", "sans-serif"],
+        sans: ["Inter", "Noto Sans JP", "sans-serif"],
+      },
+    },
+  },
+};
+</script>
+<style>
+body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+.hero-gradient {
+  background: #4DC4FF;
+}
+.copy-btn { transition: all 0.2s; }
+.copy-btn:hover { transform: scale(1.05); }
+.copy-btn.copied { background: #10B981 !important; }
+.prompt-box {
+  background: #1e1e1e;
+  border-radius: 0.75rem;
+  position: relative;
+}
+.prompt-box pre {
+  color: #e2e8f0;
+  font-family: 'Noto Sans JP', monospace;
+  font-size: 14px;
+  line-height: 1.8;
+  padding: 1.25rem;
+  padding-right: 5.5rem;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.step-number {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #4DC4FF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body class="bg-background-light text-slate-800">
+
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+  <div class="flex items-center space-x-2">
+    <span class="material-icons-outlined text-[#4DC4FF] text-2xl">terminal</span>
+    <span class="font-bold text-lg tracking-tight">Claude Code 勉強会</span>
+  </div>
+  <nav class="flex items-center space-x-4 text-sm font-medium">
+    <a class="hover:text-[#4DC4FF] transition-colors hidden sm:block" href="#flow">流れ</a>
+    <a class="hover:text-[#4DC4FF] transition-colors hidden sm:block" href="#part-1">Part 1</a>
+    <a class="hover:text-[#4DC4FF] transition-colors hidden sm:block" href="#part-2">Part 2</a>
+    <a class="hover:text-[#4DC4FF] transition-colors hidden sm:block" href="#part-3">Part 3</a>
+  </nav>
+</div>
+</header>
+
+<!-- Hero -->
+<section class="hero-gradient py-16 lg:py-24 text-white">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+  <p class="font-bold tracking-widest uppercase mb-3 text-sm text-white/80">Claude Code 勉強会 第2回</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
+    LP作ってみる会<br/>
+    <span class="text-white/90 text-xl md:text-2xl font-bold">Claude Codeで実際にLPを完成させる60分</span>
+  </h1>
+  <p class="max-w-2xl mx-auto text-base text-white/90 mb-10 leading-relaxed">
+    「難しそう」を「できた！」に変えよう。<br class="hidden sm:block"/>
+    実際に手を動かして、Skillsの力を体感する。
+  </p>
+
+  <!-- Flow Diagram -->
+  <div class="max-w-4xl mx-auto">
+    <div class="rounded-2xl p-4">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-1">
+        <div class="bg-white rounded-xl p-4 text-center min-w-[110px] shadow-sm">
+          <span class="material-icons-outlined text-3xl mb-1 block text-[#4DC4FF]">mood</span>
+          <p class="text-xs font-bold text-slate-800">1. ワクワク体感</p>
+          <p class="text-xs text-[#0369A1] mt-0.5">各チームの事例</p>
+        </div>
+        <span class="material-icons-outlined text-xl text-white rotate-90 md:rotate-0">chevron_right</span>
+        <div class="bg-white rounded-xl p-4 text-center min-w-[110px] shadow-sm">
+          <span class="material-icons-outlined text-3xl mb-1 block text-[#4DC4FF]">play_circle</span>
+          <p class="text-xs font-bold text-slate-800">2. ライブデモ</p>
+          <p class="text-xs text-[#0369A1] mt-0.5">見て体感する</p>
+        </div>
+        <span class="material-icons-outlined text-xl text-white rotate-90 md:rotate-0">chevron_right</span>
+        <div class="bg-white rounded-xl p-4 text-center min-w-[110px] shadow-sm">
+          <span class="material-icons-outlined text-3xl mb-1 block text-[#4DC4FF]">edit_note</span>
+          <p class="text-xs font-bold text-slate-800">3. 自分で作る</p>
+          <p class="text-xs text-[#0369A1] mt-0.5">スキルなし体験</p>
+        </div>
+        <span class="material-icons-outlined text-xl text-white rotate-90 md:rotate-0">chevron_right</span>
+        <div class="bg-white rounded-xl p-4 text-center min-w-[110px] shadow-sm">
+          <span class="material-icons-outlined text-3xl mb-1 block text-[#4DC4FF]">auto_fix_high</span>
+          <p class="text-xs font-bold text-slate-800">4. スキルで作る</p>
+          <p class="text-xs text-[#0369A1] mt-0.5">差分を体感</p>
+        </div>
+        <span class="material-icons-outlined text-xl text-white rotate-90 md:rotate-0">chevron_right</span>
+        <div class="bg-white rounded-xl p-4 text-center min-w-[110px] shadow-sm">
+          <span class="material-icons-outlined text-3xl mb-1 block text-[#4DC4FF]">psychology</span>
+          <p class="text-xs font-bold text-slate-800">5. Skillsを理解</p>
+          <p class="text-xs text-[#0369A1] mt-0.5">組織への応用</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Before / After -->
+<section class="py-12 bg-white">
+<div class="max-w-5xl mx-auto px-4 sm:px-6">
+  <div class="text-center mb-8">
+    <p class="text-sm font-bold text-[#FF8082] uppercase tracking-wider mb-2">Today's Goal</p>
+    <h2 class="text-2xl md:text-3xl font-extrabold">今日で変わること</h2>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+    <div class="bg-slate-100 rounded-2xl p-6 border border-slate-300">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-icons-outlined text-slate-400 text-xl">cancel</span>
+        <span class="font-bold text-slate-600">Before（今日の前）</span>
+      </div>
+      <ul class="space-y-3">
+        <li class="flex items-start gap-2">
+          <span class="material-icons-outlined text-slate-400 text-base mt-0.5 flex-shrink-0">close</span>
+          <span class="text-sm">Claude CodeでLPが作れるかわからない</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="material-icons-outlined text-slate-400 text-base mt-0.5 flex-shrink-0">close</span>
+          <span class="text-sm">Skillsって何？という状態</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="material-icons-outlined text-slate-400 text-base mt-0.5 flex-shrink-0">close</span>
+          <span class="text-sm">自分の仕事にClaude Codeをどう使えばいいかピンとこない</span>
+        </li>
+      </ul>
+    </div>
+    <div class="bg-[#BFE4FF]/10 rounded-2xl p-6 border border-[#BFE4FF]/40">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-icons-outlined text-[#4DC4FF] text-xl">check_circle</span>
+        <span class="font-bold text-[#0369A1]">After（今日の後）</span>
+      </div>
+      <ul class="space-y-3">
+        <li class="flex items-start gap-2">
+          <span class="material-icons-outlined text-[#4DC4FF] text-base mt-0.5 flex-shrink-0">check_circle</span>
+          <span class="text-sm">Claude CodeでLPを1本完成させた</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="material-icons-outlined text-[#4DC4FF] text-base mt-0.5 flex-shrink-0">check_circle</span>
+          <span class="text-sm">Skillsを使うと何が変わるか、差分で体感した</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="material-icons-outlined text-[#4DC4FF] text-base mt-0.5 flex-shrink-0">check_circle</span>
+          <span class="text-sm">自分のチームの業務でも使える場面がイメージできた</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 今日の流れ -->
+<section id="flow" class="py-12 bg-[#FAFAF8]">
+<div class="max-w-5xl mx-auto px-4 sm:px-6">
+  <div class="text-center mb-8">
+    <p class="text-sm font-bold text-[#0369A1] uppercase tracking-wider mb-2">Schedule</p>
+    <h2 class="text-2xl md:text-3xl font-extrabold">今日の流れ（60分）</h2>
+  </div>
+  <div class="space-y-3 max-w-3xl mx-auto">
+    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex items-start gap-4">
+      <div class="step-number">1</div>
+      <div>
+        <div class="flex items-center gap-2 flex-wrap mb-1">
+          <h3 class="font-bold">冒頭：なぜ今これをやるのか</h3>
+          <span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">5分</span>
+        </div>
+        <p class="text-sm text-slate-500">今日のゴール：Claude CodeでLPを1本完成させる</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex items-start gap-4">
+      <div class="step-number">2</div>
+      <div>
+        <div class="flex items-center gap-2 flex-wrap mb-1">
+          <h3 class="font-bold">Part 1：ワクワク + ライブデモ</h3>
+          <span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">15分</span>
+        </div>
+        <p class="text-sm text-slate-500">各チームの代表事例を見る → ライブデモでLPが完成するまでを見る</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex items-start gap-4">
+      <div class="step-number">3</div>
+      <div>
+        <div class="flex items-center gap-2 flex-wrap mb-1">
+          <h3 class="font-bold">Part 2：スキルなし vs スキルあり</h3>
+          <span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">30分</span>
+        </div>
+        <p class="text-sm text-slate-500">素のClaude Codeで体験 → コンマリスペシャルスキルで体験 → 差分を比べる</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex items-start gap-4">
+      <div class="step-number">4</div>
+      <div>
+        <div class="flex items-center gap-2 flex-wrap mb-1">
+          <h3 class="font-bold">Part 3：Skillsとは何か</h3>
+          <span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">7分</span>
+        </div>
+        <p class="text-sm text-slate-500">Skillsの仕組みと、組織でシェアすることで広がる可能性</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex items-start gap-4">
+      <div class="step-number">5</div>
+      <div>
+        <div class="flex items-center gap-2 flex-wrap mb-1">
+          <h3 class="font-bold">クロージング：宿題と次回予告</h3>
+          <span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">3分</span>
+        </div>
+        <p class="text-sm text-slate-500">帰った後にやること1つだけ。提出方法と次回予告</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Part 1: ワクワク + ライブデモ -->
+<section id="part-1" class="py-14 bg-white">
+<div class="max-w-5xl mx-auto px-4 sm:px-6">
+  <div class="mb-8">
+    <span class="inline-block bg-[#FF8082]/10 text-[#FF8082] px-4 py-1 rounded-full text-sm font-bold mb-4">Part 1 — 15分</span>
+    <h2 class="text-2xl md:text-3xl font-extrabold mb-2">ワクワク + ライブデモ</h2>
+    <p class="text-slate-500">各チームの活用事例を見て、このあと自分が作るイメージを掴もう</p>
+  </div>
+
+  <!-- 各チームの代表事例 -->
+  <h3 class="font-bold text-base mb-4 flex items-center gap-2">
+    <span class="material-icons-outlined text-[#4DC4FF] text-xl">groups</span>
+    各チームでできること（5分）
+  </h3>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+    <div class="bg-[#BFE4FF]/10 rounded-xl p-5 border border-[#BFE4FF]/30">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="material-icons-outlined text-[#4DC4FF] text-xl">live_tv</span>
+        <span class="font-bold text-sm">ウェビナーチーム</span>
+      </div>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex items-start gap-2"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check</span>企画案を1ヶ月分まとめて出す</li>
+        <li class="flex items-start gap-2"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check</span>サムネイル用の画像生成</li>
+      </ul>
+    </div>
+    <div class="bg-[#BFE4FF]/10 rounded-xl p-5 border border-[#BFE4FF]/30">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="material-icons-outlined text-[#4DC4FF] text-xl">event</span>
+        <span class="font-bold text-sm">イベントチーム</span>
+      </div>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex items-start gap-2"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check</span>交番表（シフト表）を即作成</li>
+        <li class="flex items-start gap-2"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check</span>司会台本を自動生成</li>
+      </ul>
+    </div>
+    <div class="bg-[#BFE4FF]/10 rounded-xl p-5 border border-[#BFE4FF]/30">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="material-icons-outlined text-[#4DC4FF] text-xl">campaign</span>
+        <span class="font-bold text-sm">マーケチーム</span>
+      </div>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex items-start gap-2"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check</span>LINE配信シナリオを作成</li>
+        <li class="flex items-start gap-2"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check</span>広告コピー案を複数出す</li>
+      </ul>
+    </div>
+    <div class="bg-[#BFE4FF]/10 rounded-xl p-5 border border-[#BFE4FF]/30">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="material-icons-outlined text-[#4DC4FF] text-xl">support_agent</span>
+        <span class="font-bold text-sm">CSチーム</span>
+      </div>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex items-start gap-2"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check</span>会員向け案内文を即生成</li>
+        <li class="flex items-start gap-2"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check</span>メール・LINE配信用テキスト</li>
+      </ul>
+    </div>
+    <div class="bg-[#FFFF80]/20 rounded-xl p-5 border-2 border-[#e6d800] sm:col-span-1 lg:col-span-2">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="material-icons-outlined text-slate-700 text-xl">star</span>
+        <span class="font-bold text-slate-800 text-sm">全チーム共通 ← 今日やること</span>
+      </div>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex items-start gap-2"><span class="material-icons-outlined text-slate-600 text-sm mt-0.5 flex-shrink-0">check</span>LPをゼロから作成する</li>
+        <li class="flex items-start gap-2"><span class="material-icons-outlined text-slate-600 text-sm mt-0.5 flex-shrink-0">check</span>集客ページ・サービス紹介・イベント告知、なんでも対応</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ライブデモ -->
+  <h3 class="font-bold text-base mb-4 flex items-center gap-2">
+    <span class="material-icons-outlined text-[#4DC4FF] text-xl">play_circle</span>
+    ライブデモ（10分）
+  </h3>
+  <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 space-y-3">
+    <div class="bg-white rounded-xl p-4 border border-slate-200 flex items-start gap-3">
+      <div class="step-number flex-shrink-0" style="width:2rem;height:2rem;font-size:0.75rem;">1</div>
+      <div>
+        <p class="font-bold text-sm">お題：「Claude Code勉強会の集客LP」</p>
+        <p class="text-xs text-slate-500 mt-1">今まさに参加しているこの勉強会のLP。自分が知っているテーマだから完成をイメージしやすい</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl p-4 border border-slate-200 flex items-start gap-3">
+      <div class="step-number flex-shrink-0" style="width:2rem;height:2rem;font-size:0.75rem;">2</div>
+      <div>
+        <p class="font-bold text-sm">lp-builder スキルの実演を見る</p>
+        <p class="text-xs text-slate-500 mt-1">まずは見るだけ。実際の速さとクオリティを先に確認しよう</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl p-4 border border-slate-200 flex items-start gap-3">
+      <div class="step-number flex-shrink-0" style="width:2rem;height:2rem;font-size:0.75rem;">3</div>
+      <div>
+        <p class="font-bold text-sm">完成品をブラウザで確認する</p>
+        <p class="text-xs text-slate-500 mt-1">「これが数分で作れる」を自分の目で見る</p>
+        <a href="https://konmari-prog.github.io/claude-code-lp/" target="_blank" rel="noopener" class="text-xs text-[#0369A1] underline inline-flex items-center gap-1 mt-1.5">
+          <span class="material-icons-outlined text-sm">open_in_new</span>
+          完成LPを開く →
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Part 2: スキルなし vs スキルあり -->
+<section id="part-2" class="py-14 bg-[#C9ACE6]/5">
+<div class="max-w-5xl mx-auto px-4 sm:px-6">
+  <div class="mb-8">
+    <span class="inline-block bg-[#FF8082]/10 text-[#FF8082] px-4 py-1 rounded-full text-sm font-bold mb-4">Part 2 — 30分</span>
+    <h2 class="text-2xl md:text-3xl font-extrabold mb-2">スキルなし vs スキルあり</h2>
+    <p class="text-slate-500">まず素のClaude Codeで試して、次にスキルを使う。2回作ることで違いが体感できる</p>
+  </div>
+
+  <!-- スキルなし体験 -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-9 h-9 bg-slate-200 rounded-full flex items-center justify-center flex-shrink-0">
+        <span class="text-sm font-bold text-slate-600">1</span>
+      </div>
+      <h3 class="font-bold text-lg">スキルなしで作ってみる（10分）</h3>
+    </div>
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+      <p class="text-sm text-slate-600 mb-4">全員でClaude Codeに以下を貼り付けて依頼してみる</p>
+      <div class="prompt-box mb-5">
+        <button class="copy-btn absolute top-3 right-3 bg-slate-600 hover:bg-slate-500 text-white text-xs px-3 py-1.5 rounded-lg flex items-center gap-1" onclick="copyPrompt(this, 'prompt-no-skill')">
+          <span class="material-icons-outlined text-base">content_copy</span> コピー
+        </button>
+        <pre id="prompt-no-skill">Claude Code勉強会の集客LPを作ってください</pre>
+      </div>
+      <div>
+        <p class="text-sm font-bold text-slate-700 mb-2">出てきたものを見て感想を聞く</p>
+        <ul class="space-y-2 text-sm text-slate-600">
+          <li class="flex items-start gap-2"><span class="material-icons-outlined text-slate-400 text-sm mt-0.5 flex-shrink-0">arrow_right</span>何度も質問される・指示が難しい</li>
+          <li class="flex items-start gap-2"><span class="material-icons-outlined text-slate-400 text-sm mt-0.5 flex-shrink-0">arrow_right</span>デザインのクオリティがバラバラ</li>
+          <li class="flex items-start gap-2"><span class="material-icons-outlined text-slate-400 text-sm mt-0.5 flex-shrink-0">arrow_right</span>どこを修正すればいいかわからない</li>
+        </ul>
+      </div>
+      <div class="mt-4 bg-[#FFFF80]/20 border border-[#e6d800] rounded-xl p-3 flex items-center gap-2">
+        <span class="material-icons-outlined text-slate-700 text-base flex-shrink-0">arrow_forward</span>
+        <p class="text-sm font-bold text-slate-700">次は同じお題をスキルありで作ってみる</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- コンマリスペシャルスキルで作る -->
+  <div>
+    <div class="flex items-center gap-3 mb-4">
+      <div class="step-number">2</div>
+      <h3 class="font-bold text-lg">コンマリスペシャルスキルで作る（20分）</h3>
+    </div>
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+      <!-- ステップ1: インストール -->
+      <div class="bg-[#BFE4FF]/10 rounded-xl p-5 border border-[#BFE4FF]/30">
+        <div class="flex items-start gap-3">
+          <div class="step-number flex-shrink-0" style="width:2rem;height:2rem;font-size:0.75rem;">1</div>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-sm mb-1">lp-builder スキルをインストール（3分）</p>
+            <p class="text-xs text-slate-500 mb-3">スキルギャラリーからダウンロードして Claude に追加する</p>
+            <div class="space-y-2">
+              <!-- ① ダウンロード -->
+              <div class="flex items-start gap-3 bg-white rounded-lg p-3 border border-slate-200">
+                <span class="w-5 h-5 bg-[#4DC4FF] text-white rounded-full text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+                <div>
+                  <p class="text-xs font-bold text-slate-800">スキルギャラリーでダウンロード</p>
+                  <a href="https://sites.google.com/10xc.jp/claude-code/%E3%82%B9%E3%82%AD%E3%83%AB%E3%82%AE%E3%83%A3%E3%83%A9%E3%83%AA%E3%83%BC" target="_blank" rel="noopener" class="text-xs text-[#0369A1] underline">スキルギャラリーを開く →</a>
+                </div>
+              </div>
+              <!-- ② Claude.ai 設定からアップロード -->
+              <div class="flex items-start gap-3 bg-white rounded-lg p-3 border border-slate-200">
+                <span class="w-5 h-5 bg-[#4DC4FF] text-white rounded-full text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+                <div>
+                  <p class="text-xs font-bold text-slate-800">Claude の設定からアップロード</p>
+                  <p class="text-xs text-slate-500 mt-0.5">設定 → 機能 → スキル → スキルをアップロード</p>
+                </div>
+              </div>
+              <!-- Claude Code ユーザー向け -->
+              <div class="bg-slate-50 rounded-lg p-3 border border-slate-200">
+                <p class="text-xs text-slate-400 mb-1.5">Claude Code の場合</p>
+                <div class="space-y-2">
+                  <div class="flex items-start gap-2 text-xs text-slate-600">
+                    <span class="w-4 h-4 bg-slate-400 text-white rounded-full font-bold flex items-center justify-center flex-shrink-0 mt-0.5" style="font-size:0.6rem;">1</span>
+                    <span>ダウンロードした <code class="bg-slate-200 px-1 rounded">lp-builder.zip</code> をダブルクリックして解凍</span>
+                  </div>
+                  <div class="flex items-start gap-2 text-xs text-slate-600">
+                    <span class="w-4 h-4 bg-slate-400 text-white rounded-full font-bold flex items-center justify-center flex-shrink-0 mt-0.5" style="font-size:0.6rem;">2</span>
+                    <span>解凍した <code class="bg-slate-200 px-1 rounded">lp-builder</code> フォルダを <code class="bg-slate-200 px-1 rounded">~/.claude/skills/</code> に保存</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ステップ2: 同じお題で作る -->
+      <div class="bg-[#BFE4FF]/10 rounded-xl p-5 border border-[#BFE4FF]/30">
+        <div class="flex items-start gap-3">
+          <div class="step-number flex-shrink-0" style="width:2rem;height:2rem;font-size:0.75rem;">2</div>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-sm mb-1">同じお題でもう一度（12分）</p>
+            <p class="text-xs text-slate-500 mb-3">lp-builder が発動すると、ヒアリングに答えながら進む対話型フローが始まる</p>
+            <div class="prompt-box mb-3">
+              <button class="copy-btn absolute top-3 right-3 bg-slate-600 hover:bg-slate-500 text-white text-xs px-3 py-1.5 rounded-lg flex items-center gap-1" onclick="copyPrompt(this, 'prompt-with-skill')">
+                <span class="material-icons-outlined text-base">content_copy</span> コピー
+              </button>
+              <pre id="prompt-with-skill">Claude Code勉強会の集客LPを作って</pre>
+            </div>
+            <p class="text-xs font-bold text-slate-700 mb-2">lp-builder が自動でやってくれること：</p>
+            <ul class="space-y-1.5 text-xs text-slate-600">
+              <li class="flex items-start gap-1.5"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check_circle</span>ターゲット・強み・CTAをヒアリング</li>
+              <li class="flex items-start gap-1.5"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check_circle</span>セクション構成とコピーを設計</li>
+              <li class="flex items-start gap-1.5"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check_circle</span>プロクオリティのHTMLを1ファイルで生成</li>
+              <li class="flex items-start gap-1.5"><span class="material-icons-outlined text-[#4DC4FF] text-sm mt-0.5 flex-shrink-0">check_circle</span>ブラウザプレビューで表示確認まで自動実行</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ステップ3: 差分を言語化 -->
+      <div class="bg-[#BFE4FF]/10 rounded-xl p-5 border border-[#BFE4FF]/30">
+        <div class="flex items-start gap-3">
+          <div class="step-number flex-shrink-0" style="width:2rem;height:2rem;font-size:0.75rem;">3</div>
+          <div>
+            <p class="font-bold text-sm mb-1">差分を確認する（5分）</p>
+            <p class="text-xs text-slate-500">さっきのLPとスキルありのLPを並べて比べる。品質・スピード・安定性の違いを自分の言葉にしてみよう</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Part 3: Skillsとは何か -->
+<section id="part-3" class="py-14 bg-white">
+<div class="max-w-5xl mx-auto px-4 sm:px-6">
+  <div class="mb-8">
+    <span class="inline-block bg-[#FF8082]/10 text-[#FF8082] px-4 py-1 rounded-full text-sm font-bold mb-4">Part 3 — 7分</span>
+    <h2 class="text-2xl md:text-3xl font-extrabold mb-2">Skillsとは何か</h2>
+    <p class="text-slate-500">さっきの体験を振り返りながら、Skillsの仕組みを理解する</p>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+      <div class="w-10 h-10 bg-[#BFE4FF]/30 rounded-xl flex items-center justify-center mb-3">
+        <span class="material-icons-outlined text-[#4DC4FF] text-xl">person</span>
+      </div>
+      <h3 class="font-bold text-sm mb-1">組織にすごい人がいる</h3>
+      <p class="text-xs text-slate-500">特定の人だけが持つ知識・ノウハウ・仕事の進め方がある</p>
+    </div>
+    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+      <div class="w-10 h-10 bg-[#BFE4FF]/30 rounded-xl flex items-center justify-center mb-3">
+        <span class="material-icons-outlined text-[#4DC4FF] text-xl">file_copy</span>
+      </div>
+      <h3 class="font-bold text-sm mb-1">その能力を丸コピーできる</h3>
+      <p class="text-xs text-slate-500">Skillsファイルに落とし込めば、誰でも同じ質でできる</p>
+    </div>
+    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+      <div class="w-10 h-10 bg-[#BFE4FF]/30 rounded-xl flex items-center justify-center mb-3">
+        <span class="material-icons-outlined text-[#4DC4FF] text-xl">trending_up</span>
+      </div>
+      <h3 class="font-bold text-sm mb-1">組織の知識資産が積み上がる</h3>
+      <p class="text-xs text-slate-500">シェアが広がるほど、チーム全体の底上げが加速する</p>
+    </div>
+  </div>
+
+  <div class="bg-[#FFFF80]/10 border-2 border-[#e6d800] rounded-2xl p-6 mb-6">
+    <h3 class="font-bold text-base mb-4 flex items-center gap-2">
+      <span class="material-icons-outlined text-slate-700">lightbulb</span>
+      Skills を組織でシェアしていくと
+    </h3>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div class="flex items-center gap-2">
+        <span class="material-icons-outlined text-[#4DC4FF] text-base flex-shrink-0">check_circle</span>
+        <p class="text-sm">引き継ぎが楽になる</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="material-icons-outlined text-[#4DC4FF] text-base flex-shrink-0">check_circle</span>
+        <p class="text-sm">誰でも同じクオリティが出せる</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="material-icons-outlined text-[#4DC4FF] text-base flex-shrink-0">check_circle</span>
+        <p class="text-sm">知識資産が積み上がっていく</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-slate-800 text-white rounded-2xl p-6">
+    <p class="text-sm font-bold text-[#4DC4FF] mb-2">今日体験した lp-builder がまさにそれ</p>
+    <p class="text-sm leading-relaxed text-white/80">lp-builder は、コンマリがLP制作で使っているデザイン原則・コピー設計・カラーパレットをすべてSkillsファイルに落とし込んだものです。このスキルをインストールした人は、誰でも同じクオリティのLPが作れます。</p>
+  </div>
+</div>
+</section>
+
+<!-- 持ち帰りツール -->
+<section class="py-12 bg-[#FAFAF8]">
+<div class="max-w-5xl mx-auto px-4 sm:px-6">
+  <div class="text-center mb-8">
+    <p class="text-sm font-bold text-[#0369A1] uppercase tracking-wider mb-2">Take-home Tools</p>
+    <h2 class="text-2xl md:text-3xl font-extrabold">持ち帰りツール</h2>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto">
+    <a href="https://sites.google.com/10xc.jp/claude-code/%E3%82%B9%E3%82%AD%E3%83%AB%E3%82%AE%E3%83%A3%E3%83%A9%E3%83%AA%E3%83%BC" target="_blank" rel="noopener" class="bg-white rounded-2xl p-6 border border-slate-200 flex items-center gap-4 hover:border-[#4DC4FF] hover:shadow-md transition-all group no-underline">
+      <div class="w-12 h-12 bg-[#BFE4FF]/20 text-[#4DC4FF] rounded-xl flex items-center justify-center flex-shrink-0">
+        <span class="material-icons-outlined text-2xl">auto_fix_high</span>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-bold text-sm text-slate-800">lp-builder スキル</h4>
+        <p class="text-xs text-slate-500 mt-0.5">スキルギャラリーでダウンロード</p>
+      </div>
+      <span class="material-icons-outlined text-slate-300 group-hover:text-[#4DC4FF] transition-colors text-base flex-shrink-0">open_in_new</span>
+    </a>
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 flex items-center gap-4">
+      <div class="w-12 h-12 bg-[#BFE4FF]/20 text-[#4DC4FF] rounded-xl flex items-center justify-center flex-shrink-0">
+        <span class="material-icons-outlined text-2xl">description</span>
+      </div>
+      <div>
+        <h4 class="font-bold text-sm">この配布資料</h4>
+        <p class="text-xs text-slate-500 mt-0.5">プロンプト付き。手順を見返しながら自習できる</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 flex items-center gap-4">
+      <div class="w-12 h-12 bg-[#BFE4FF]/20 text-[#4DC4FF] rounded-xl flex items-center justify-center flex-shrink-0">
+        <span class="material-icons-outlined text-2xl">assignment_turned_in</span>
+      </div>
+      <div>
+        <h4 class="font-bold text-sm">宿題提出フォーム</h4>
+        <p class="text-xs text-slate-500 mt-0.5">作ったLPを提出するとSlackに通知される仕組み</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 flex items-center gap-4">
+      <div class="w-12 h-12 bg-[#FFFF80]/40 text-slate-700 rounded-xl flex items-center justify-center flex-shrink-0">
+        <span class="material-icons-outlined text-2xl">arrow_forward</span>
+      </div>
+      <div>
+        <h4 class="font-bold text-sm">次回：自分のSkillsを作る</h4>
+        <p class="text-xs text-slate-500 mt-0.5">自分の業務ノウハウをSkillsファイルに落とし込む方法</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 宿題 -->
+<section class="py-12 bg-slate-800 text-white">
+<div class="max-w-5xl mx-auto px-4 sm:px-6">
+  <div class="text-center mb-8">
+    <p class="text-sm font-bold text-[#4DC4FF] uppercase tracking-wider mb-2">Homework</p>
+    <h2 class="text-2xl md:text-3xl font-extrabold">宿題：1つだけ</h2>
+    <p class="text-white/90 mt-2 text-sm">帰った後にやること、これだけ</p>
+  </div>
+  <div class="max-w-lg mx-auto">
+    <div class="bg-white/10 rounded-2xl p-8 border border-white/20 text-center">
+      <span class="material-icons-outlined text-5xl text-[#4DC4FF] mb-4 block">web</span>
+      <h3 class="text-xl font-extrabold mb-3">自分のチームに関係するテーマでLPを1本作る</h3>
+      <p class="text-white/90 text-sm mb-6 leading-relaxed">今日体験したlp-builderスキルを使って、自分の業務に近いテーマで作ってみる。完璧じゃなくてOK、まず完成させること</p>
+      <a class="inline-flex items-center gap-2 bg-[#4DC4FF] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#3AB4EF] transition-colors" href="https://docs.google.com/forms/d/e/1FAIpQLSeBXBNOQjksaA5JCOGFHFX1l1qJtRjzIzgw_i4UcVNQg4NGNA/viewform?usp=pp_url&entry.1261106693=%E7%AC%AC2%E5%9B%9E%E3%81%BE%E3%81%9A%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%82%8B(2026%2F02%2F24)" target="_blank" rel="noopener">
+        <span class="material-icons-outlined">send</span>
+        提出フォームを開く
+      </a>
+      <p class="text-xs text-white/80 mt-3">提出するとSlackに通知が届きます</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- まとめ -->
+<section class="hero-gradient py-14 text-white">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+  <p class="text-sm font-bold text-white/90 uppercase tracking-wider mb-3">Summary</p>
+  <h2 class="text-2xl md:text-3xl font-extrabold mb-8">今日できるようになったこと</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto mb-8">
+    <div class="bg-white/20 backdrop-blur rounded-xl p-5 flex items-center gap-3">
+      <span class="material-icons-outlined text-3xl flex-shrink-0">web</span>
+      <p class="font-bold text-sm text-left">Claude CodeでLPを1本完成させた</p>
+    </div>
+    <div class="bg-white/20 backdrop-blur rounded-xl p-5 flex items-center gap-3">
+      <span class="material-icons-outlined text-3xl flex-shrink-0">compare_arrows</span>
+      <p class="font-bold text-sm text-left">スキルあり / なしの差分を体感した</p>
+    </div>
+    <div class="bg-white/20 backdrop-blur rounded-xl p-5 flex items-center gap-3">
+      <span class="material-icons-outlined text-3xl flex-shrink-0">groups</span>
+      <p class="font-bold text-sm text-left">自分のチームでの活用場面がイメージできた</p>
+    </div>
+    <div class="bg-white/20 backdrop-blur rounded-xl p-5 flex items-center gap-3">
+      <span class="material-icons-outlined text-3xl flex-shrink-0">psychology</span>
+      <p class="font-bold text-sm text-left">Skillsが組織でどう機能するか理解した</p>
+    </div>
+  </div>
+  <p class="text-white/90 text-sm">次回はいよいよ「自分のオリジナルSkillsを作る」回です。お楽しみに</p>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-slate-900 text-white py-8">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+  <div class="flex items-center gap-2">
+    <span class="material-icons-outlined text-[#4DC4FF] text-xl">terminal</span>
+    <span class="font-bold">Claude Code 勉強会 第2回</span>
+  </div>
+  <p class="text-slate-400 text-sm">配布資料 | 2026年2月</p>
+</div>
+</footer>
+
+<script>
+function copyPrompt(button, promptId) {
+  const promptElement = document.getElementById(promptId);
+  const text = promptElement.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    button.classList.add('copied');
+    button.innerHTML = '<span class="material-icons-outlined text-base">check</span> コピー完了';
+    setTimeout(() => {
+      button.classList.remove('copied');
+      button.innerHTML = '<span class="material-icons-outlined text-base">content_copy</span> コピー';
+    }, 2000);
+  }).catch(err => {
+    console.error('コピーに失敗:', err);
+    alert('コピーに失敗しました');
+  });
+}
+</script>
+</body>
+</html>
